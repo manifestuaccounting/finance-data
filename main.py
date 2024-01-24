@@ -6,7 +6,7 @@ import os
 app = FastAPI()
 load_dotenv()
 
-stripe.api_key = os.environ['STIPRE_API_KEY']
+stripe.api_key = os.environ['STRIPE_API_KEY']
 
 @app.get('/1')
 async def root():
