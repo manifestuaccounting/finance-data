@@ -1,12 +1,20 @@
 from fastapi import FastAPI, Request
 import stripe
+from dotenv import load_dotenv
+import os
 
 app = FastAPI()
-stripe.api_key = 'sk_test_51JuKP4IoVeovnndhM4s9HIZEbpy0OZfR2YWYaD4ZANEYkDgbiInDzCIPFROcHqhbrN18ciglpl6UR0Y7ThbL7wkd00ujB8BeL1'
+load_dotenv()
 
-@app.get('/')
+stripe.api_key = os.environ['STIPRE_API_KEY']
+
+@app.get('/1')
 async def root():
     return "Hello world!"
+
+@app.get('/2')
+async def root2():
+    return "Hello world again!"
 
 @app.post("/data")
 async def post_data(request: Request):
