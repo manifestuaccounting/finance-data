@@ -9,13 +9,9 @@ load_dotenv()
 stripe.api_key = os.environ['STRIPE_API_KEY']
 stripe_endpoint_key = os.environ['ENDPOINT_SECRET_KEY']
 
-@app.get('/1')
+@app.get('/')
 async def root():
     return "Hello world!"
-
-@app.get('/2')
-async def root2():
-    return "Hello world again!"
 
 @app.post("/data")
 async def post_data(request: Request):
