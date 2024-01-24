@@ -7,6 +7,7 @@ app = FastAPI()
 load_dotenv()
 
 stripe.api_key = os.environ['STRIPE_API_KEY']
+stripe_endpoint_key = os.environ['ENDPOINT_SECRET_KEY']
 
 @app.get('/1')
 async def root():
@@ -23,7 +24,7 @@ async def post_data(request: Request):
 
     try:
         event = stripe.Webhook.construct_event(
-            payload, sig_header,'whsec_hdQkx0UM1VHwaGgwj2mhcRlCjWLwlt2j'
+            payload, sig_header, stripe_endpoint_key
         )
         print(event)
 
