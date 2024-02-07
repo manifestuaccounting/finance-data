@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status
 import stripe
 from dotenv import load_dotenv
 import os
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 load_dotenv()
@@ -13,8 +14,8 @@ stripe_endpoint_key = os.environ['ENDPOINT_SECRET_KEY']
 async def root():
     return "Hello world!"
 
-@app.post("/data")
-async def post_data(request: Request):
+@app.post("/stripe-data")
+async def post_stripe_data(request: Request):
     payload = await request.body()
     sig_header = request.headers.get('Stripe-Signature')
 
@@ -31,3 +32,19 @@ async def post_data(request: Request):
         raise e
     
     return{'status': 'success'}
+
+@app.post('/quickbooks-data')
+async def post_quickbooks_data(request: Request):
+    payload = await request.json()
+
+    try:
+        print('data received', payload)
+    except ValueError as e:
+        raise e
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Webhook received"})
+
+@app.get('/quickbooks-data')
+async def get_quickbooks_code(request: Request):
+    challenge_token = request.query_params.get("challenge_token")
+    print(challenge_token)
+    return challenge_token
